@@ -1,0 +1,111 @@
+.admin-reviews-page {
+  padding: 20px;
+  background: linear-gradient(135deg, #f5f9ff, #ffffff);
+  border-radius: 8px;
+}
+
+.reviews-actions {
+  margin-bottom: 16px;
+}
+
+.filter-group {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+}
+
+.filter-group input {
+  padding: 8px 10px;
+  border: 1px solid #ddd;
+  border-radius: 6px;
+}
+
+.btn {
+  padding: 8px 12px;
+  border: 1px solid #cfd8dc;
+  background: #f7f9fb;
+  border-radius: 6px;
+  cursor: pointer;
+}
+
+.btn:hover {
+  background: #eef3f7;
+}
+
+.btn-primary {
+  background: #1976d2;
+  color: #fff;
+  border-color: #1976d2;
+}
+
+.btn-primary:hover {
+  background: #1669bb;
+}
+
+.btn-secondary {
+  background: #eceff1;
+}
+
+.btn-danger {
+  background: #e53935;
+  color: #fff;
+  border-color: #e53935;
+}
+
+.review-form-card,
+.reviews-table-card {
+  background: #fff;
+  padding: 16px;
+  border-radius: 8px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+  margin-bottom: 16px;
+}
+
+.form-group {
+  margin-bottom: 12px;
+}
+
+.form-group input,
+.form-group select,
+.form-group textarea {
+  width: 100%;
+  padding: 8px 10px;
+  border: 1px solid #ddd;
+  border-radius: 6px;
+}
+
+.form-actions {
+  display: flex;
+  gap: 8px;
+}
+
+.table-responsive {
+  overflow-x: auto;
+}
+
+.reviews-table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.reviews-table th,
+.reviews-table td {
+  text-align: left;
+  padding: 10px;
+  border-bottom: 1px solid #eee;
+  vertical-align: top;
+}
+
+.comment-cell {
+  max-width: 400px;
+}
+
+.error {
+  background: #ffe6e6;
+  color: #c0392b;
+  padding: 8px 10px;
+  border-radius: 6px;
+  margin-bottom: 12px;
+}
+
+

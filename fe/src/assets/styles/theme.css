@@ -1,0 +1,49 @@
+/* Global buttons */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 10px 14px;
+  border-radius: 8px;
+  border: 1px solid #cfd8dc;
+  background: #f7f9fb;
+  color: #0f172a;
+  cursor: pointer;
+  transition: background .2s, color .2s, border-color .2s, transform .1s;
+}
+.btn:hover { background: #eef3f7; }
+.btn:active { transform: translateY(1px); }
+
+.btn-primary {
+  background: #1976d2;
+  color: #fff;
+  border-color: #1976d2;
+}
+.btn-primary:hover { background: #1669bb; }
+
+.btn-secondary {
+  background: #eceff1;
+}
+
+.btn-danger {
+  background: #e53935;
+  color: #fff;
+  border-color: #e53935;
+}
+
+/* Empty state */
+.empty {
+  background: #fff;
+  border: 1px dashed #cbd5e1;
+  color: #64748b;
+  padding: 24px;
+  border-radius: 12px;
+  text-align: center;
+}
+
+/* Form page background utility */
+.form-page-bg {
+  background: linear-gradient(135deg, #f5f9ff, #ffffff);
+}
+
+

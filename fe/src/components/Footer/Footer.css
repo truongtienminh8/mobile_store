@@ -1,0 +1,227 @@
+.footer {
+  background: #f5f5f7;
+  color: #1d1d1f;
+  padding: 60px 0 30px;
+  margin-top: 80px;
+  border-top: 1px solid #e5e5e7;
+}
+
+.footer-content {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 30px;
+  margin-bottom: 30px;
+}
+
+.footer-section h3 {
+  margin-bottom: 15px;
+  font-size: 18px;
+  color: #1d1d1f;
+}
+
+.footer-section ul {
+  list-style: none;
+  padding: 0;
+}
+
+.footer-section ul li {
+  margin-bottom: 10px;
+  color: #6e6e73;
+}
+
+.footer-section a {
+  color: #6e6e73;
+  text-decoration: none;
+  transition: color 0.3s;
+}
+
+.footer-section a:hover {
+  color: #0071e3;
+}
+
+/* ============================================
+   PHƯƠNG THỨC THANH TOÁN
+   ============================================ */
+.payment-methods {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-top: 12px;
+  margin-bottom: 15px;
+}
+
+.payment-item {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 8px 12px;
+  background: #ffffff;
+  border-radius: 8px;
+  border: 1px solid #e5e5e7;
+  transition: all 0.3s ease;
+  cursor: pointer;
+}
+
+.payment-item:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+  border-color: #d1d1d6;
+}
+
+.payment-item:active {
+  transform: translateY(0);
+}
+
+.payment-logo {
+  width: 32px;
+  height: 32px;
+  object-fit: contain;
+}
+
+
+/* ============================================
+   MẠNG XÃ HỘI
+   ============================================ */
+.social-links {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.social-link {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 16px;
+  border: 1px solid #e5e5e7;
+  border-radius: 8px;
+  text-decoration: none;
+  font-size: 15px;
+  transition: all 0.3s;
+  font-weight: 500;
+}
+
+.social-link svg {
+  font-size: 18px;
+}
+
+/* Facebook */
+.social-link.facebook {
+  color: #1877f2;
+  background: #ffffff;
+  border-color: #d6e4ff;
+}
+
+.social-link.facebook:hover {
+  background: #1877f2;
+  color: #fff;
+  border-color: #1877f2;
+}
+
+/* Instagram với gradient */
+.social-link.instagram {
+  color: #c13584;
+  background: #ffffff;
+  border: 1px solid #efe6ee;
+  background-image: linear-gradient(
+    45deg,
+    #feda75 0%,
+    #fa7e1e 25%,
+    #d62976 50%,
+    #962fbf 75%,
+    #405de6 100%
+  );
+  background-repeat: no-repeat;
+  background-size: 0% 100%;
+  background-position: left center;
+  transition: background-size 0.35s ease, color 0.25s ease,
+    border-color 0.25s ease;
+}
+
+.social-link.instagram:hover {
+  background-size: 100% 100%;
+  color: #ffffff;
+  border-color: transparent;
+}
+
+/* TikTok */
+.social-link.tiktok {
+  color: #000000;
+  background: #ffffff;
+  border-color: #e5e5e7;
+}
+
+.social-link.tiktok:hover {
+  background: #000000;
+  color: #fff;
+  border-color: #000000;
+}
+
+/* YouTube */
+.social-link.youtube {
+  color: #ff0000;
+  background: #ffffff;
+  border-color: #ffcccc;
+}
+
+.social-link.youtube:hover {
+  background: #ff0000;
+  color: #fff;
+  border-color: #ff0000;
+}
+
+/* ============================================
+   FOOTER BOTTOM
+   ============================================ */
+.footer-bottom {
+  text-align: center;
+  padding-top: 20px;
+  border-top: 1px solid #e5e5e7;
+  color: #6e6e73;
+  font-size: 14px;
+}
+
+/* ============================================
+   RESPONSIVE
+   ============================================ */
+@media (max-width: 1024px) {
+  .footer-content {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 40px;
+  }
+}
+
+@media (max-width: 768px) {
+  .footer {
+    padding: 40px 0 20px;
+    margin-top: 60px;
+  }
+
+  .footer-content {
+    grid-template-columns: 1fr;
+    gap: 30px;
+  }
+
+  .payment-methods {
+    gap: 8px;
+    justify-content: flex-start;
+  }
+
+  .payment-item {
+    padding: 6px 10px;
+  }
+
+  .payment-logo {
+    width: 28px;
+    height: 28px;
+  }
+
+  .social-links {
+    gap: 10px;
+  }
+
+  .social-link {
+    padding: 10px 14px;
+    font-size: 14px;
+  }
+}

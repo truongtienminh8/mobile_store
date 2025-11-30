@@ -1,0 +1,42 @@
+@import './ManageReviews.css';
+
+.admin-news-page {
+  padding: 20px;
+  background: linear-gradient(135deg, #f5f9ff, #ffffff);
+  border-radius: 8px;
+}
+
+.news-form-card,
+.news-table-card {
+  background: #fff;
+  padding: 16px;
+  border-radius: 8px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+  margin-bottom: 16px;
+}
+
+.news-form .form-group {
+  margin-bottom: 12px;
+}
+
+.news-form textarea {
+  min-height: 90px;
+}
+
+.admin-table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.admin-table th,
+.admin-table td {
+  padding: 10px;
+  border-bottom: 1px solid #eef2f7;
+  text-align: left;
+}
+
+.pagination {
+  display: flex;
+  gap: 6px;
+}
+

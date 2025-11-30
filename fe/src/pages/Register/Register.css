@@ -1,0 +1,21 @@
+.input-error {
+  border-color: #dc3545 !important;
+}
+
+.input-success {
+  border-color: #28a745 !important;
+}
+
+.field-error {
+  color: #dc3545;
+  font-size: 0.875rem;
+  margin-top: 4px;
+  display: block;
+}
+
+.field-success {
+  color: #28a745;
+  font-size: 0.875rem;
+  margin-top: 4px;
+  display: block;
+}
