@@ -13,7 +13,7 @@ import ProductsDetail from "./pages/ProductsDetail/ProductsDetail";
 import SearchPage from "./pages/Search/Search";
 import Carts from "./pages/Carts/Carts";
 import Checkout from "./pages/Checkout/Checkout";
-import Login from "./pages/Login/Login";
+import Login from "./pages/login/login";
 import Register from "./pages/Register/Register";
 import About from "./pages/About/About";
 import MyOrders from "./pages/Orders/MyOrders"; // Thêm import này (điều chỉnh path nếu cần)
