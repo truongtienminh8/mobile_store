@@ -12,17 +12,161 @@ const Register = () => {
     phone: "",
     gender: "",
     age: "",
-    address: "",
+    address: "", // Trường này sẽ lưu tên Tỉnh/Thành phố được chọn
   });
   const [error, setError] = useState("");
   const [phoneError, setPhoneError] = useState("");
+  const [emailError, setEmailError] = useState("");
+  const [emailSuggestion, setEmailSuggestion] = useState("");
   const [passwordMatch, setPasswordMatch] = useState(null);
   const { register } = useAuth();
   const navigate = useNavigate();
 
-  // Validate số điện thoại Việt Nam
+  // Danh sách 63 tỉnh thành Việt Nam
+  const vietnamProvinces = [
+    "An Giang",
+    "Bà Rịa - Vũng Tàu",
+    "Bắc Giang",
+    "Bắc Kạn",
+    "Bạc Liêu",
+    "Bắc Ninh",
+    "Bến Tre",
+    "Bình Định",
+    "Bình Dương",
+    "Bình Phước",
+    "Bình Thuận",
+    "Cà Mau",
+    "Cần Thơ",
+    "Cao Bằng",
+    "Đà Nẵng",
+    "Đắk Lắk",
+    "Đắk Nông",
+    "Điện Biên",
+    "Đồng Nai",
+    "Đồng Tháp",
+    "Gia Lai",
+    "Hà Giang",
+    "Hà Nam",
+    "Hà Nội",
+    "Hà Tĩnh",
+    "Hải Dương",
+    "Hải Phòng",
+    "Hậu Giang",
+    "Hòa Bình",
+    "Hưng Yên",
+    "Khánh Hòa",
+    "Kiên Giang",
+    "Kon Tum",
+    "Lai Châu",
+    "Lâm Đồng",
+    "Lạng Sơn",
+    "Lào Cai",
+    "Long An",
+    "Nam Định",
+    "Nghệ An",
+    "Ninh Bình",
+    "Ninh Thuận",
+    "Phú Thọ",
+    "Phú Yên",
+    "Quảng Bình",
+    "Quảng Nam",
+    "Quảng Ngãi",
+    "Quảng Ninh",
+    "Quảng Trị",
+    "Sóc Trăng",
+    "Sơn La",
+    "Tây Ninh",
+    "Thái Bình",
+    "Thái Nguyên",
+    "Thanh Hóa",
+    "Thừa Thiên Huế",
+    "Tiền Giang",
+    "TP. Hồ Chí Minh",
+    "Trà Vinh",
+    "Tuyên Quang",
+    "Vĩnh Long",
+    "Vĩnh Phúc",
+    "Yên Bái",
+  ];
+
+  // Danh sách các domain email phổ biến tại Việt Nam
+  const commonDomains = [
+    "gmail.com",
+    "yahoo.com",
+    "outlook.com",
+    "hotmail.com",
+    "icloud.com",
+    "fpt.vn",
+    "vnu.edu.vn",
+    "hust.edu.vn",
+    "hcmut.edu.vn",
+  ];
+
+  // --- CÁC HÀM VALIDATE GIỮ NGUYÊN ---
+  const validateEmail = (email) => {
+    const emailRegex = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+    return emailRegex.test(email);
+  };
+
+  const checkEmailSuggestion = (email) => {
+    if (!email.includes("@")) return "";
+    const [localPart, domainPart] = email.split("@");
+    if (!domainPart) return "";
+
+    const typos = {
+      "gmail.con": "gmail.com",
+      "gmail.cm": "gmail.com",
+      "gmail.vom": "gmail.com",
+      "gmai.com": "gmail.com",
+      "gmial.com": "gmail.com",
+      "yahoo.con": "yahoo.com",
+      "yahoo.cm": "yahoo.com",
+      "yaho.com": "yahoo.com",
+      "outlok.com": "outlook.com",
+      "outllook.com": "outlook.com",
+      "hotmail.con": "hotmail.com",
+      "hotmial.com": "hotmail.com",
+    };
+
+    if (typos[domainPart.toLowerCase()]) {
+      return `${localPart}@${typos[domainPart.toLowerCase()]}`;
+    }
+
+    const domain = domainPart.toLowerCase();
+    for (const commonDomain of commonDomains) {
+      if (
+        domain !== commonDomain &&
+        (domain.includes(commonDomain.slice(0, -4)) ||
+          levenshteinDistance(domain, commonDomain) <= 2)
+      ) {
+        return `${localPart}@${commonDomain}`;
+      }
+    }
+    return "";
+  };
+
+  const levenshteinDistance = (str1, str2) => {
+    const matrix = [];
+    for (let i = 0; i <= str2.length; i++) matrix[i] = [i];
+    for (let j = 0; j <= str1.length; j++) matrix[0][j] = j;
+
+    for (let i = 1; i <= str2.length; i++) {
+      for (let j = 1; j <= str1.length; j++) {
+        if (str2.charAt(i - 1) === str1.charAt(j - 1)) {
+          matrix[i][j] = matrix[i - 1][j - 1];
+        } else {
+          matrix[i][j] = Math.min(
+            matrix[i - 1][j - 1] + 1,
+            matrix[i][j - 1] + 1,
+            matrix[i - 1][j] + 1
+          );
+        }
+      }
+    }
+    return matrix[str2.length][str1.length];
+  };
+
   const validatePhone = (phone) => {
-    // Regex cho số điện thoại VN: bắt đầu bằng 0, theo sau là 9 số
     const phoneRegex = /^(0|\+84)[0-9]{9}$/;
     return phoneRegex.test(phone.replace(/\s/g, ""));
   };
@@ -31,7 +175,26 @@ const Register = () => {
     const { name, value } = e.target;
     setFormData({ ...formData, [name]: value });
 
-    // Validate số điện thoại khi người dùng nhập
+    if (name === "email") {
+      if (value) {
+        if (!validateEmail(value)) {
+          setEmailError("Email không hợp lệ (VD: example@gmail.com)");
+          setEmailSuggestion("");
+        } else {
+          setEmailError("");
+          const suggestion = checkEmailSuggestion(value);
+          if (suggestion && suggestion !== value) {
+            setEmailSuggestion(suggestion);
+          } else {
+            setEmailSuggestion("");
+          }
+        }
+      } else {
+        setEmailError("");
+        setEmailSuggestion("");
+      }
+    }
+
     if (name === "phone") {
       if (value && !validatePhone(value)) {
         setPhoneError("Số điện thoại không hợp lệ (VD: 0912345678)");
@@ -40,12 +203,10 @@ const Register = () => {
       }
     }
 
-    // Kiểm tra khớp mật khẩu khi người dùng nhập
     if (name === "password" || name === "confirmPassword") {
       const pwd = name === "password" ? value : formData.password;
       const confirmPwd =
         name === "confirmPassword" ? value : formData.confirmPassword;
-
       if (confirmPwd) {
         setPasswordMatch(pwd === confirmPwd);
       } else {
@@ -54,23 +215,28 @@ const Register = () => {
     }
   };
 
+  const handleEmailSuggestionClick = () => {
+    setFormData({ ...formData, email: emailSuggestion });
+    setEmailSuggestion("");
+    setEmailError("");
+  };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     setError("");
 
-    // Validate số điện thoại
+    if (!validateEmail(formData.email)) {
+      setError("Email không hợp lệ");
+      return;
+    }
     if (!validatePhone(formData.phone)) {
       setError("Số điện thoại không hợp lệ");
       return;
     }
-
-    // Validate mật khẩu khớp
     if (formData.password !== formData.confirmPassword) {
       setError("Mật khẩu không khớp");
       return;
     }
-
-    // Validate độ dài mật khẩu
     if (formData.password.length < 6) {
       setError("Mật khẩu phải có ít nhất 6 ký tự");
       return;
@@ -117,8 +283,23 @@ const Register = () => {
               name="email"
               value={formData.email}
               onChange={handleChange}
+              placeholder="VD: example@gmail.com"
               required
+              className={emailError ? "input-error" : ""}
             />
+            {emailError && <span className="field-error">{emailError}</span>}
+            {emailSuggestion && !emailError && (
+              <div className="email-suggestion">
+                Có phải bạn muốn nhập{" "}
+                <span
+                  className="suggestion-link"
+                  onClick={handleEmailSuggestionClick}
+                >
+                  {emailSuggestion}
+                </span>
+                ?
+              </div>
+            )}
           </div>
 
           <div className="form-group">
@@ -146,33 +327,27 @@ const Register = () => {
               <option value="">-- Chọn giới tính --</option>
               <option value="Nam">Nam</option>
               <option value="Nữ">Nữ</option>
-              <option value="Khác">Khác</option>
             </select>
           </div>
 
+          {/* --- PHẦN ĐÃ SỬA: CHỌN TỈNH THÀNH --- */}
           <div className="form-group">
-            <label>Độ tuổi</label>
-            <input
-              type="number"
-              name="age"
-              min="10"
-              max="100"
-              value={formData.age}
-              onChange={handleChange}
-              required
-            />
-          </div>
-
-          <div className="form-group">
-            <label>Địa chỉ</label>
-            <input
-              type="text"
+            <label>Tỉnh/Thành phố (Địa chỉ)</label>
+            <select
               name="address"
               value={formData.address}
               onChange={handleChange}
               required
-            />
+            >
+              <option value="">-- Chọn Tỉnh/Thành phố --</option>
+              {vietnamProvinces.map((province, index) => (
+                <option key={index} value={province}>
+                  {province}
+                </option>
+              ))}
+            </select>
           </div>
+          {/* ------------------------------------- */}
 
           <div className="form-group">
             <label>Mật khẩu</label>

@@ -1,7 +1,10 @@
+/* AdminLayout.css */
+
 .admin-layout {
   display: flex;
-  min-height: 100vh;
-  font-family: 'Segoe UI', sans-serif;
+  height: 100vh; /* Giữ cố định chiều cao màn hình */
+  overflow: hidden; /* Ẩn thanh cuộn thừa */
+  font-family: "Segoe UI", sans-serif;
 }
 
 .admin-sidebar {
@@ -9,33 +12,101 @@
   background-color: #1e293b;
   color: #fff;
   padding: 20px;
+  display: flex;
+  flex-direction: column;
+  overflow-y: auto; /* Cho phép menu cuộn nếu quá dài */
+  flex-shrink: 0;
 }
 
 .admin-sidebar h2 {
   font-size: 1.5rem;
-  margin-bottom: 1rem;
+  margin-bottom: 1.5rem;
+  text-align: center;
+  font-weight: 700;
+  letter-spacing: 0.5px;
+  flex-shrink: 0;
 }
 
+/* --- STYLE CHUNG CHO CÁC LINK --- */
+.admin-sidebar a {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  color: #cbd5e1;
+  text-decoration: none;
+  padding: 12px 16px;
+  border-radius: 8px;
+  transition: all 0.2s ease;
+  font-weight: 500;
+  flex-shrink: 0;
+}
+
+.admin-sidebar a svg {
+  font-size: 1.2rem;
+  min-width: 20px;
+}
+
+/* Hover vào menu thường (chưa active) */
+.admin-sidebar nav a:hover {
+  background-color: #334155;
+  color: #fff;
+  transform: translateX(5px);
+}
+
+/* --- STYLE CHO TRẠNG THÁI ACTIVE (ĐÃ SỬA: NỀN TRẮNG) --- */
+.admin-sidebar a.active {
+  background-color: #ffffff; /* ĐỔI THÀNH NỀN TRẮNG */
+  color: #3b82f6; /* Đổi chữ thành màu xanh dương để nổi trên nền trắng */
+  font-weight: 700; /* In đậm hơn chút cho đẹp */
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.2);
+}
+
+/* Khi di chuột vào nút đang Active */
+.admin-sidebar a.active:hover {
+  background-color: #f1f5f9; /* Màu trắng xám nhẹ khi hover */
+  color: #2563eb;
+  transform: translateX(5px);
+}
+
+/* Icon trong trạng thái active cũng đổi sang màu xanh */
+.admin-sidebar a.active svg {
+  color: #3b82f6;
+}
+
+/* --- PHẦN NÚT VỀ TRANG CHỦ --- */
+.home-btn-container {
+  margin-bottom: 20px;
+  border-bottom: 1px solid #334155;
+  padding-bottom: 20px;
+  flex-shrink: 0;
+}
+
+.admin-home-btn {
+  background-color: #3b82f6;
+  color: #fff !important; /* Nút này giữ nguyên màu xanh, chữ trắng */
+  justify-content: center;
+  font-weight: 600;
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.2);
+}
+
+.admin-home-btn:hover {
+  background-color: #2563eb !important;
+  transform: translateY(-2px);
+  box-shadow: 0 6px 8px -1px rgba(0, 0, 0, 0.3);
+}
+
+/* --- PHẦN NAV MENU --- */
 .admin-sidebar nav {
   display: flex;
   flex-direction: column;
-  gap: 12px;
+  gap: 8px;
 }
 
-.admin-sidebar a {
-  color: #fff;
-  text-decoration: none;
-  padding: 10px;
-  border-radius: 8px;
-  transition: 0.2s;
-}
-
-.admin-sidebar a:hover {
-  background-color: #334155;
-}
-
+/* --- PHẦN NỘI DUNG CHÍNH --- */
 .admin-content {
   flex: 1;
-  padding: 20px;
-  background: linear-gradient(135deg, #f7fbff, #ffffff);
+  padding: 30px;
+  background: linear-gradient(135deg, #f8fafc, #edf2f7);
+  overflow-y: auto; /* Nội dung cuộn độc lập */
+  height: 100%;
 }

@@ -1,0 +1,161 @@
+/* 1. Container chính của trang quản lý */
+.manage-carts {
+  background-color: #ffffff;
+  padding: 24px;
+  border-radius: 12px;
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 
+              0 2px 4px -1px rgba(0, 0, 0, 0.06);
+  min-height: calc(100vh - 100px);
+}
+
+/* Header: Tiêu đề và các nút bấm */
+.manage-carts-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 24px;
+  padding-bottom: 16px;
+  border-bottom: 1px solid #e2e8f0;
+}
+
+.manage-carts h1 {
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: #1e293b;
+  margin: 0;
+}
+
+/* Các nút bấm (Button) */
+.manage-carts .btn {
+  padding: 8px 16px;
+  border-radius: 6px;
+  border: none;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s;
+  font-size: 0.9rem;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+
+/* Nút Làm mới (Màu xám/trắng) */
+.manage-carts .btn-default {
+  background-color: #f1f5f9;
+  color: #475569;
+}
+
+.manage-carts .btn-default:hover {
+  background-color: #e2e8f0;
+  color: #1e293b;
+}
+
+/* Nút Xoá giỏ trống (Màu đỏ) */
+.manage-carts .btn-danger {
+  background-color: #fee2e2;
+  color: #ef4444;
+}
+
+.manage-carts .btn-danger:hover {
+  background-color: #fca5a5;
+  color: #fff;
+}
+
+/* 2. Bảng dữ liệu (Table) */
+.table-container {
+  overflow-x: auto; /* Cho phép cuộn ngang trên mobile */
+}
+
+.cart-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.95rem;
+}
+
+/* Tiêu đề cột */
+.cart-table th {
+  background-color: #f8fafc;
+  color: #64748b;
+  font-weight: 600;
+  text-transform: uppercase;
+  font-size: 0.75rem;
+  letter-spacing: 0.05em;
+  padding: 16px;
+  text-align: left;
+  border-bottom: 2px solid #e2e8f0;
+}
+
+/* Dòng dữ liệu */
+.cart-table td {
+  padding: 16px;
+  border-bottom: 1px solid #e2e8f0;
+  color: #334155;
+  vertical-align: middle;
+}
+
+.cart-table tr:hover td {
+  background-color: #f8fafc; /* Highlight dòng khi di chuột */
+}
+
+/* 3. Các thành phần nhỏ trong bảng */
+
+/* Tên user */
+.user-info {
+  font-weight: 600;
+  color: #0f172a;
+}
+
+/* Giá tiền */
+.price-text {
+  font-family: 'Segoe UI', monospace;
+  font-weight: 600;
+  color: #0f172a;
+}
+
+/* Badges (Trạng thái) */
+.badge {
+  display: inline-block;
+  padding: 4px 10px;
+  border-radius: 999px;
+  font-size: 0.75rem;
+  font-weight: 600;
+  text-align: center;
+}
+
+.badge-active {
+  background-color: #dcfce7;
+  color: #166534; /* Xanh lá */
+}
+
+.badge-empty {
+  background-color: #f1f5f9;
+  color: #64748b; /* Xám */
+}
+
+/* Nút hành động trong bảng */
+.action-btn {
+  background: none;
+  border: none;
+  color: #3b82f6;
+  font-weight: 500;
+  cursor: pointer;
+  padding: 0;
+}
+
+.action-btn:hover {
+  text-decoration: underline;
+  color: #2563eb;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .manage-carts {
+    padding: 16px;
+  }
+  
+  .manage-carts-header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 12px;
+  }
+}

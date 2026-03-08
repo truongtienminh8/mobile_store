@@ -20,10 +20,20 @@ const ManageReviews = () => {
       const data = await reviewService.list(
         filterProductId ? { productId: filterProductId } : {},
       )
-      setReviews(data)
+      
+      // --- FIX 1: Kiểm tra dữ liệu trả về có phải mảng không ---
+      if (Array.isArray(data)) {
+        setReviews(data)
+      } else {
+        console.warn('API trả về dữ liệu không phải mảng:', data)
+        setReviews([]) // Fallback về mảng rỗng để không bị lỗi .map
+      }
+      
       show('Đã tải danh sách đánh giá', 'info', 1200)
     } catch (e) {
+      console.error(e)
       setError('Không tải được danh sách đánh giá')
+      setReviews([]) // Đảm bảo reviews luôn là mảng ngay cả khi lỗi
     } finally {
       setLoading(false)
     }
@@ -99,7 +109,7 @@ const ManageReviews = () => {
 
   const filteredCountText = useMemo(() => {
     return filterProductId ? `(Sản phẩm #${filterProductId})` : ''
-  }, [filterProductId])
+  }, [filterProductId, reviews]) // Thêm reviews vào dependencies để update số lượng nếu cần
 
   return (
     <div className="admin-reviews-page">
@@ -164,7 +174,7 @@ const ManageReviews = () => {
             <select name="rating" value={form.rating} onChange={onChange} required>
               <option value={5}>5</option>
               <option value={4}>4</option>
-              <option value={3}>3</option>
+              <option value={3}>3</option> 
               <option value={2}>2</option>
               <option value={1}>1</option>
             </select>
@@ -211,26 +221,37 @@ const ManageReviews = () => {
                 <th>Actions</th>
               </tr>
             </thead>
+            
+            {/* --- FIX 2: Render an toàn trong tbody --- */}
             <tbody>
-              {reviews.map((r) => (
-                <tr key={r.id}>
-                  <td>{r.id}</td>
-                  <td>#{r.productId}</td>
-                  <td>{r.userName}</td>
-                  <td>{r.rating}</td>
-                  <td className="comment-cell">{r.comment}</td>
-                  <td>{r.createdAt ? new Date(r.createdAt).toLocaleString() : '-'}</td>
-                  <td>
-                    <button className="btn" onClick={() => onEdit(r)}>
-                      Sửa
-                    </button>
-                    <button className="btn btn-danger" onClick={() => onDelete(r.id)}>
-                      Xoá
-                    </button>
+              {Array.isArray(reviews) && reviews.length > 0 ? (
+                reviews.map((r) => (
+                  <tr key={r.id || Math.random()}> 
+                    <td>{r.id}</td>
+                    <td>#{r.productId}</td>
+                    <td>{r.userName}</td>
+                    <td>{r.rating}</td>
+                    <td className="comment-cell">{r.comment}</td>
+                    <td>{r.createdAt ? new Date(r.createdAt).toLocaleString() : '-'}</td>
+                    <td>
+                      <button className="btn" onClick={() => onEdit(r)}>
+                        Sửa
+                      </button>
+                      <button className="btn btn-danger" onClick={() => onDelete(r.id)}>
+                        Xoá
+                      </button>
+                    </td>
+                  </tr>
+                ))
+              ) : (
+                <tr>
+                  <td colSpan="7" style={{ textAlign: 'center', padding: '20px', color: '#666' }}>
+                    {loading ? 'Đang tải dữ liệu...' : 'Không có đánh giá nào.'}
                   </td>
                 </tr>
-              ))}
+              )}
             </tbody>
+
           </table>
         </div>
       </div>
@@ -239,5 +260,3 @@ const ManageReviews = () => {
 }
 
 export default ManageReviews
-
-

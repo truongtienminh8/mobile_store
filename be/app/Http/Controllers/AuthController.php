@@ -7,13 +7,13 @@ use App\Models\User;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
-use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Str;
 
 class AuthController extends Controller
 {
     public function register(Request $request): JsonResponse
     {
+        // 1. Validate dữ liệu đầu vào
         $data = $request->validate([
             'name' => ['required', 'string', 'max:255'],
             'email' => ['required', 'string', 'email', 'max:255', 'unique:users,email'],
@@ -24,7 +24,10 @@ class AuthController extends Controller
             'address' => ['nullable', 'string', 'max:255'],
         ]);
 
+        // 2. Tạo User (Password sẽ lưu dạng text thô vì Model User đã tắt cast hashed)
         $user = User::create($data);
+        
+        // 3. Cấp Token
         $token = $this->issueToken($user);
 
         return response()->json([
@@ -44,7 +47,9 @@ class AuthController extends Controller
 
         $user = User::where('email', $credentials['email'])->first();
 
-        if (!$user || !Hash::check($credentials['password'], $user->password)) {
+        // 4. Kiểm tra thủ công: So sánh chuỗi password người dùng nhập (credentials)
+        // với password trong DB ($user->password) bằng toán tử !==
+        if (!$user || $credentials['password'] !== $user->password) {
             return response()->json([
                 'success' => false,
                 'message' => 'Email hoặc mật khẩu không đúng',
@@ -71,5 +76,3 @@ class AuthController extends Controller
         return $token;
     }
 }
-
-

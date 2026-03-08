@@ -47,9 +47,15 @@ const ProductsDetail = () => {
       setReviewError('')
       try {
         const data = await reviewService.list({ productId: id })
-        setReviews(data)
+        // --- FIX 1: Kiểm tra data có phải mảng không ---
+        if (Array.isArray(data)) {
+          setReviews(data)
+        } else {
+          setReviews([])
+        }
       } catch (e) {
         setReviewError('Không tải được đánh giá')
+        setReviews([]) // Reset về mảng rỗng nếu lỗi
       } finally {
         setReviewLoading(false)
       }
@@ -76,7 +82,9 @@ const ProductsDetail = () => {
         rating: Number(reviewForm.rating),
         comment: reviewForm.comment,
       })
-      setReviews((prev) => [created, ...prev])
+      // --- FIX 2: Cập nhật state an toàn ---
+      setReviews((prev) => [created, ...(Array.isArray(prev) ? prev : [])])
+      
       setReviewForm({ userName: '', rating: 5, comment: '' })
       show('Gửi đánh giá thành công', 'success')
     } catch (e) {
@@ -112,8 +120,9 @@ const ProductsDetail = () => {
           {/* Product Images */}
           <div className="product-images">
             <div className="main-image">
+              {/* --- FIX 3: Thêm || null để tránh warning empty string src --- */}
               <img
-                src={resolveAssetUrl(product.images?.[selectedImage] || product.image)}
+                src={resolveAssetUrl(product.images?.[selectedImage] || product.image) || null}
                 alt={product.name}
               />
             </div>
@@ -122,7 +131,7 @@ const ProductsDetail = () => {
                 {product.images.map((img, index) => (
                   <img
                     key={index}
-                    src={resolveAssetUrl(img)}
+                    src={resolveAssetUrl(img) || null}
                     alt={`${product.name} ${index + 1}`}
                     className={selectedImage === index ? 'active' : ''}
                     onClick={() => setSelectedImage(index)}
@@ -251,14 +260,13 @@ const ProductsDetail = () => {
 
           <div className="reviews-list-card">
             <h3>Danh sách đánh giá</h3>
-            {reviewLoading && reviews.length === 0 ? (
+            {/* --- FIX 4: Logic hiển thị an toàn tuyệt đối --- */}
+            {reviewLoading && (!reviews || reviews.length === 0) ? (
               <div>Đang tải đánh giá...</div>
-            ) : reviews.length === 0 ? (
-              <div>Chưa có đánh giá nào.</div>
-            ) : (
+            ) : Array.isArray(reviews) && reviews.length > 0 ? (
               <ul className="reviews-list">
                 {reviews.map((r) => (
-                  <li key={r.id} className="review-item">
+                  <li key={r.id || Math.random()} className="review-item">
                     <div className="review-header">
                       <strong>{r.userName || r.user_name}</strong>
                       <span className="review-rating">{"⭐".repeat(r.rating || 0)}</span>
@@ -274,6 +282,8 @@ const ProductsDetail = () => {
                   </li>
                 ))}
               </ul>
+            ) : (
+              <div>Chưa có đánh giá nào.</div>
             )}
           </div>
         </div>

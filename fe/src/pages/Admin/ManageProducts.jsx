@@ -9,8 +9,7 @@ const emptyForm = {
   price: '',
   originalPrice: '',
   discount: 0,
-  image: '',
-  images: '',
+  image: '', // Dùng URL string
   brand: '',
   category: '',
   ram: '',
@@ -73,21 +72,65 @@ const ManageProducts = () => {
 
   const resetForm = () => setForm(emptyForm)
 
+  // --- XỬ LÝ NHẬP LIỆU & TÍNH TOÁN GIÁ ---
   const onChange = (e) => {
     const { name, value, type, checked } = e.target
-    setForm((prev) => ({
-      ...prev,
-      [name]: type === 'checkbox' ? checked : value,
-    }))
+    let newValue = type === 'checkbox' ? checked : value
+
+    setForm((prev) => {
+      const updatedForm = { ...prev, [name]: newValue }
+
+      // Logic tính toán giá tự động
+      if (['price', 'originalPrice', 'discount'].includes(name)) {
+        let price = Number(updatedForm.price)
+        let originalPrice = Number(updatedForm.originalPrice)
+        let discount = Number(updatedForm.discount)
+        const inputValue = Number(newValue)
+
+        if (name === 'originalPrice') {
+          originalPrice = inputValue
+          if (discount > 0) {
+            price = originalPrice * (1 - discount / 100)
+          } else if (price > 0 && price < originalPrice) {
+            discount = ((originalPrice - price) / originalPrice) * 100
+          }
+        } else if (name === 'discount') {
+          discount = inputValue
+          if (originalPrice > 0) {
+            price = originalPrice * (1 - discount / 100)
+          } else if (price > 0 && discount < 100) {
+            originalPrice = price / (1 - discount / 100)
+          }
+        } else if (name === 'price') {
+          price = inputValue
+          if (originalPrice > 0) {
+            if (price <= originalPrice) {
+              discount = ((originalPrice - price) / originalPrice) * 100
+            } else {
+              discount = 0
+            }
+          } else if (discount > 0 && discount < 100) {
+            originalPrice = price / (1 - discount / 100)
+          }
+        }
+
+        updatedForm.price = price > 0 ? Math.round(price) : ''
+        updatedForm.originalPrice = originalPrice > 0 ? Math.round(originalPrice) : ''
+        updatedForm.discount = discount > 0 ? parseFloat(discount.toFixed(2)) : 0
+      }
+
+      return updatedForm
+    })
   }
 
   const preparePayload = () => {
-    const payload = {
+    return {
       name: form.name.trim(),
       price: Number(form.price),
       originalPrice: form.originalPrice ? Number(form.originalPrice) : null,
       discount: form.discount ? Number(form.discount) : 0,
-      image: form.image || null,
+      image: form.image || null, // Gửi link ảnh
+      images: [], // Gửi mảng rỗng để fix lỗi backend
       brand: form.brand || null,
       category: form.category || null,
       ram: form.ram || null,
@@ -99,19 +142,6 @@ const ManageProducts = () => {
       description: form.description || null,
       isFeatured: form.isFeatured,
     }
-
-    const images = form.images
-      .split(',')
-      .map((img) => img.trim())
-      .filter(Boolean)
-
-    if (images.length) {
-      payload.images = images
-    } else {
-      payload.images = []
-    }
-
-    return payload
   }
 
   const onSubmit = async (e) => {
@@ -127,7 +157,6 @@ const ManageProducts = () => {
         show('Cập nhật sản phẩm thành công', 'success')
       } else {
         const created = await productService.create(payload)
-        // refresh list to ensure pagination stays correct
         if (page !== 1) {
           setPage(1)
         } else {
@@ -139,7 +168,11 @@ const ManageProducts = () => {
       fetchProducts(true)
     } catch (err) {
       console.error(err)
-      setError('Lưu sản phẩm thất bại')
+      if (err.response && err.response.data && err.response.data.message) {
+        setError('Lỗi: ' + err.response.data.message)
+      } else {
+        setError('Lưu sản phẩm thất bại')
+      }
       show('Lưu sản phẩm thất bại', 'error')
     } finally {
       setLoading(false)
@@ -154,7 +187,6 @@ const ManageProducts = () => {
       originalPrice: product.originalPrice || '',
       discount: product.discount || 0,
       image: product.image || '',
-      images: (product.images || []).join(', '),
       brand: product.brand || '',
       category: product.category || '',
       ram: product.ram || '',
@@ -190,14 +222,6 @@ const ManageProducts = () => {
     <div className="admin-products-page">
       <div className="page-header">
         <h1>Quản lý sản phẩm</h1>
-        <div className="page-actions">
-          <button className="btn" onClick={() => fetchProducts(true)} disabled={loading}>
-            Làm mới
-          </button>
-          <button className="btn btn-secondary" onClick={resetForm} disabled={loading}>
-            Tạo mới
-          </button>
-        </div>
       </div>
 
       <div className="filters">
@@ -255,7 +279,7 @@ const ManageProducts = () => {
               />
             </div>
             <div className="form-group">
-              <label>Giá *</label>
+              <label>Giá Bán (Sau giảm) *</label>
               <input
                 type="number"
                 name="price"
@@ -263,16 +287,18 @@ const ManageProducts = () => {
                 value={form.price}
                 onChange={onChange}
                 required
+                placeholder="Nhập giá bán..."
               />
             </div>
             <div className="form-group">
-              <label>Giá gốc</label>
+              <label>Giá gốc (Trước giảm)</label>
               <input
                 type="number"
                 name="originalPrice"
                 min="0"
                 value={form.originalPrice}
                 onChange={onChange}
+                placeholder="Nhập giá gốc..."
               />
             </div>
             <div className="form-group">
@@ -284,30 +310,33 @@ const ManageProducts = () => {
                 max="100"
                 value={form.discount}
                 onChange={onChange}
+                placeholder="Nhập %..."
               />
             </div>
           </div>
 
           <div className="form-row">
+            {/* NHẬP URL ẢNH */}
             <div className="form-group">
-              <label>Ảnh đại diện</label>
+              <label>Link Ảnh đại diện (URL)</label>
               <input
                 type="text"
                 name="image"
                 value={form.image}
                 onChange={onChange}
-                placeholder="https://..."
+                placeholder="https://example.com/anh-san-pham.jpg"
               />
-            </div>
-            <div className="form-group">
-              <label>Ảnh phụ (phân cách bằng dấu phẩy)</label>
-              <textarea
-                name="images"
-                rows="2"
-                value={form.images}
-                onChange={onChange}
-                placeholder="https://example.com/image1.jpg, https://example.com/image2.jpg"
-              />
+              {/* Hiển thị xem trước ảnh */}
+              {form.image && (
+                <div className="image-preview-container">
+                  <img
+                    src={form.image}
+                    alt="Preview"
+                    className="image-preview"
+                    onError={(e) => { e.target.style.display = 'none' }}
+                  />
+                </div>
+              )}
             </div>
           </div>
 
@@ -438,10 +467,10 @@ const ManageProducts = () => {
               <thead>
                 <tr>
                   <th>ID</th>
+                  <th>Ảnh</th>
                   <th>Tên</th>
                   <th>Giá</th>
                   <th>Danh mục</th>
-                  <th>Thương hiệu</th>
                   <th>Nổi bật</th>
                   <th>Thao tác</th>
                 </tr>
@@ -450,6 +479,20 @@ const ManageProducts = () => {
                 {items.map((product) => (
                   <tr key={product.id}>
                     <td>#{product.id}</td>
+                    <td>
+                      {product.image ? (
+                        <img
+                          src={product.image}
+                          alt=""
+                          className="table-thumbnail"
+                          onError={(e) => { e.target.src = 'https://via.placeholder.com/50' }}
+                        />
+                      ) : (
+                        <div className="table-thumbnail" style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', background: '#f1f5f9' }}>
+                           📷
+                        </div>
+                      )}
+                    </td>
                     <td>
                       <div style={{ fontWeight: 600 }}>{product.name}</div>
                       <div style={{ fontSize: 12, color: '#64748b' }}>{product.ram} {product.storage}</div>
@@ -462,7 +505,6 @@ const ManageProducts = () => {
                       }).format(product.price || 0)}
                     </td>
                     <td>{product.category || '-'}</td>
-                    <td>{product.brand || '-'}</td>
                     <td>{product.isFeatured ? '✔️' : ''}</td>
                     <td style={{ display: 'flex', gap: 8 }}>
                       <button className="btn" onClick={() => onEdit(product)}>

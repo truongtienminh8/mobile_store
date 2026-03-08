@@ -12,8 +12,8 @@ const About = () => {
           </p>
           <h3>Sứ mệnh</h3>
           <p>
-            Nỗ lực trở thành điểm đến tin cậy cho mọi khách hàng khi tìm kiếm điện thoại, laptop,
-            tablet và phụ kiện công nghệ, với dịch vụ tận tâm và minh bạch.
+            Nỗ lực trở thành điểm đến tin cậy cho mọi khách hàng khi tìm kiếm điện thoại,
+            tablet và phụ kiện công nghệ chính hãng với dịch vụ tận tâm và minh bạch.
           </p>
           <h3>Giá trị</h3>
           <ul>
@@ -22,7 +22,8 @@ const About = () => {
             <li>Tư vấn tận tình, hậu mãi chu đáo</li>
           </ul>
           <h3>Thông tin liên hệ</h3>
-          <p>Email: support@example.com • Hotline: 0123 456 789</p>
+          <p>Admin: truongtienminh0501@gmail.com </p><br></br>
+          <p> Hotline: 0355 481 078</p>
         </div>
       </div>
     </div>

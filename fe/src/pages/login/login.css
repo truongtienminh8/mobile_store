@@ -34,14 +34,100 @@
   font-weight: 500;
 }
 
-.form-group input {
+/* Style chung cho input text và select */
+.form-group input,
+.form-group select {
   width: 100%;
   padding: 10px;
   border: 1px solid #ddd;
   border-radius: 4px;
   font-size: 16px;
+  background-color: #fff;
 }
 
+.form-group input:focus,
+.form-group select:focus {
+  outline: none;
+  border-color: #0071e3;
+  box-shadow: 0 0 0 2px rgba(0, 113, 227, 0.1);
+}
+
+/* --- PHẦN ĐÃ SỬA LẠI: CHECKBOX GHI NHỚ --- */
+
+.remember-me-group {
+  display: flex;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+.checkbox-container {
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+  font-size: 14px;
+  user-select: none;
+  color: #555;
+  width: auto; /* Đảm bảo label không bị giãn 100% */
+}
+
+/* Dùng selector cụ thể [type="checkbox"] và !important để ghi đè style chung */
+.checkbox-container input[type="checkbox"] {
+  width: 18px !important; /* Kích thước cố định */
+  height: 18px !important;
+  margin: 0 8px 0 0 !important; /* Khoảng cách với chữ */
+  padding: 0 !important; /* Bỏ padding của input text */
+  border: 1px solid #ccc !important;
+  cursor: pointer;
+  display: inline-block;
+  box-shadow: none !important; /* Bỏ shadow focus nếu có */
+  flex-shrink: 0; /* Không bị co lại nếu màn hình nhỏ */
+}
+
+/* Ẩn thẻ span checkmark thừa trong JSX của bạn để tránh lỗi giao diện */
+.checkmark {
+  display: none;
+}
+
+/* --- HẾT PHẦN SỬA CHECKBOX --- */
+
+/* Style Validation (Register) */
+.input-error {
+  border-color: #dc3545 !important;
+  background-color: #fff8f8;
+}
+
+.input-success {
+  border-color: #28a745 !important;
+}
+
+.field-error {
+  color: #dc3545;
+  font-size: 13px;
+  margin-top: 5px;
+  display: block;
+}
+
+.field-success {
+  color: #28a745;
+  font-size: 13px;
+  margin-top: 5px;
+  display: block;
+}
+
+.email-suggestion {
+  font-size: 13px;
+  margin-top: 5px;
+  color: #666;
+}
+
+.suggestion-link {
+  color: #0071e3;
+  cursor: pointer;
+  font-weight: 500;
+  text-decoration: underline;
+}
+
+/* Logic Show Password */
 .password-input-wrapper {
   position: relative;
   display: flex;
@@ -81,4 +167,60 @@
   padding: 10px;
   border-radius: 4px;
   margin-bottom: 20px;
+  border: 1px solid #fcc;
+}
+
+/* Button styling */
+.btn {
+  width: 100%;
+  padding: 12px;
+  border: none;
+  border-radius: 4px;
+  font-size: 16px;
+  cursor: pointer;
+  transition: background 0.3s;
+}
+
+.btn-primary {
+  background: #0071e3;
+  color: white;
+  font-weight: 500;
+}
+
+.btn-primary:hover {
+  background: #005bb5;
+}
+/* --- DÁN VÀO CUỐI FILE login.css --- */
+
+/* 1. Định dạng khung chứa để ô tích và chữ nằm ngang */
+.remember-me-group .checkbox-container {
+  display: flex !important;
+  align-items: center !important;
+  width: auto !important; /* Quan trọng: Chặn việc bị kéo giãn 100% */
+  cursor: pointer;
+  user-select: none;
+  gap: 8px; /* Khoảng cách giữa checkbox và chữ */
+}
+
+/* 2. Ép style của ô input về dạng checkbox chuẩn */
+/* Dùng !important để ghi đè style input to đùng ở trên */
+.checkbox-container input {
+  width: 18px !important;
+  height: 18px !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  display: inline-block !important;
+  
+  /* Bắt buộc trình duyệt hiển thị hình ô vuông checkbox */
+  appearance: auto !important; 
+  -webkit-appearance: checkbox !important;
+  
+  box-shadow: none !important;
+  border: 1px solid #ccc !important;
+  flex-shrink: 0;
+}
+
+/* 3. Ẩn thẻ span thừa đi (tránh làm vỡ giao diện) */
+.checkmark {
+  display: none !important;
 }

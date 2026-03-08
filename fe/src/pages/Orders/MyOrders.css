@@ -1,0 +1,103 @@
+.my-orders-page {
+  padding: 40px 0;
+  background-color: #f8fafc;
+  min-height: 60vh;
+}
+
+.my-orders-page h1 {
+  margin-bottom: 30px;
+  color: #1e293b;
+}
+
+.orders-list {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.order-card {
+  background: #fff;
+  border-radius: 12px;
+  padding: 20px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+  border: 1px solid #e2e8f0;
+}
+
+.order-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 15px;
+  padding-bottom: 15px;
+  border-bottom: 1px solid #f1f5f9;
+}
+
+.order-date {
+  margin-left: 15px;
+  color: #64748b;
+  font-size: 0.9rem;
+}
+
+/* Style cho các trạng thái */
+.status-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 12px;
+  border-radius: 20px;
+  font-size: 0.85rem;
+  font-weight: 600;
+}
+
+.status-pending {
+  background-color: #fef3c7;
+  color: #d97706;
+} /* Vàng */
+.status-shipping {
+  background-color: #dbeafe;
+  color: #2563eb;
+} /* Xanh dương */
+.status-delivered {
+  background-color: #dcfce7;
+  color: #166534;
+} /* Xanh lá */
+.status-cancelled {
+  background-color: #fee2e2;
+  color: #dc2626;
+} /* Đỏ */
+
+.order-items-preview {
+  margin-bottom: 15px;
+  color: #334155;
+}
+
+.order-footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+}
+
+.order-address small {
+  color: #64748b;
+}
+
+.order-total {
+  font-size: 1.1rem;
+  font-weight: 500;
+}
+
+.order-total span {
+  color: #ef4444;
+  font-weight: 700;
+  font-size: 1.3rem;
+  margin-left: 10px;
+}
+
+.cancel-alert {
+  margin-top: 15px;
+  padding: 10px;
+  background-color: #fef2f2;
+  color: #b91c1c;
+  border-radius: 6px;
+  font-size: 0.9rem;
+}

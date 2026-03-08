@@ -1,30 +1,157 @@
+/* 1. Thiết lập nền và bố cục chung */
 .about-page {
-  padding: 30px 0;
-  background: linear-gradient(135deg, #f5f9ff, #ffffff);
+  background-color: #f3f4f6;
+  min-height: calc(100vh - 64px);
+  padding: 60px 20px;
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
 }
 
+/* 2. Phần Card chứa nội dung chính */
 .about-card {
-  background: #fff;
-  border-radius: 12px;
-  padding: 24px;
-  box-shadow: 0 4px 16px rgba(0,0,0,0.06);
+  background: #ffffff;
+  max-width: 800px;
+  width: 100%;
+  padding: 60px;
+  border-radius: 20px;
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.05);
+  color: #334155;
 }
 
-.about-card h1 {
-  margin-bottom: 12px;
+/* 3. Tiêu đề chính (H2) - Giới thiệu về cửa hàng */
+.about-card h2 {
+  font-size: 2.5rem;
+  font-weight: 700;
+  text-align: center;
+  color: #1e293b;
+  margin-bottom: 30px;
+  position: relative;
+  letter-spacing: -0.5px;
 }
 
+/* Gạch chân trang trí dưới tiêu đề */
+.about-card h2::after {
+  content: "";
+  display: block;
+  width: 80px;
+  height: 4px;
+  background: linear-gradient(to right, #3b82f6, #2563eb);
+  margin: 15px auto 0;
+  border-radius: 2px;
+}
+
+/* 4. Đoạn văn giới thiệu đầu tiên (ngay sau H2) */
+.about-card h2 + p {
+  text-align: center;
+  font-size: 1.1rem;
+  line-height: 1.8;
+  color: #475569;
+  max-width: 90%;
+  margin: 0 auto 50px auto; /* Cách xa các phần dưới một chút */
+}
+
+/* 5. Các tiêu đề phụ (Sứ mệnh, Giá trị, Thông tin liên hệ) */
 .about-card h3 {
-  margin-top: 16px;
-  margin-bottom: 8px;
+  font-size: 1.4rem;
+  font-weight: 600;
+  color: #0f172a;
+  margin-top: 40px;
+  margin-bottom: 20px;
+  display: flex;
+  align-items: center;
 }
 
+/* Tạo vạch xanh bên cạnh tiêu đề phụ */
+.about-card h3::before {
+  content: "";
+  display: inline-block;
+  width: 5px;
+  height: 24px;
+  background-color: #3b82f6;
+  margin-right: 12px;
+  border-radius: 4px;
+}
+
+/* 6. Style chung cho các đoạn văn bản (Sứ mệnh...) */
+.about-card p {
+  font-size: 1rem;
+  line-height: 1.7;
+  text-align: justify;
+  margin-bottom: 15px;
+}
+
+/* 7. Danh sách giá trị (UL - LI) */
 .about-card ul {
-  padding-left: 18px;
+  list-style: none;
+  padding: 0;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 20px;
 }
 
-.about-card li {
-  margin-bottom: 6px;
+.about-card ul li {
+  background: #f8fafc;
+  padding: 20px;
+  border-radius: 12px;
+  border: 1px solid #e2e8f0;
+  font-weight: 500;
+  text-align: center;
+  color: #334155;
+  transition: all 0.3s ease;
 }
 
+.about-card ul li:hover {
+  background: #eff6ff; /* Màu xanh rất nhạt */
+  border-color: #3b82f6;
+  transform: translateY(-3px);
+  box-shadow: 0 4px 12px rgba(59, 130, 246, 0.15);
+}
 
+/* 8. PHẦN QUAN TRỌNG: STYLE CHO THÔNG TIN LIÊN HỆ */
+/* Dùng dấu ~ để chọn TẤT CẢ thẻ p nằm sau thẻ h3 cuối cùng */
+.about-card h3:last-of-type ~ p {
+  background: #1e293b; /* Nền tối */
+  color: #ffffff;
+  padding: 12px 24px;
+  border-radius: 50px; /* Bo tròn hình viên thuốc */
+  text-align: center;
+  font-weight: 600;
+  font-size: 1rem;
+  width: fit-content; /* Co gọn theo nội dung chữ */
+  margin: 10px auto; /* Căn giữa và tạo khoảng cách */
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  /* Reset lại text-align justify ở trên để chữ trong nút đẹp hơn */
+  text-align: center; 
+  display: block; 
+}
+
+/* Ẩn thẻ <br> trong JSX đi vì chúng ta đã dùng margin để tách dòng rồi */
+.about-card h3:last-of-type ~ br {
+  display: none;
+}
+
+/* 9. Responsive Mobile */
+@media (max-width: 768px) {
+  .about-page {
+    padding: 20px 10px;
+  }
+  
+  .about-card {
+    padding: 30px 20px;
+  }
+
+  .about-card h2 {
+    font-size: 1.8rem;
+  }
+  
+  .about-card ul {
+    grid-template-columns: 1fr;
+  }
+
+  /* Trên mobile cho nút liên hệ full chiều rộng */
+  .about-card h3:last-of-type ~ p {
+    width: 100%;
+    border-radius: 12px;
+  }
+}

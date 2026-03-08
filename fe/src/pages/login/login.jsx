@@ -8,6 +8,9 @@ const Login = () => {
   const [password, setPassword] = useState('')
   const [error, setError] = useState('')
   const [showPassword, setShowPassword] = useState(false)
+  // 1. Thêm state cho checkbox "Ghi nhớ"
+  const [rememberMe, setRememberMe] = useState(false) 
+  
   const { login } = useAuth()
   const navigate = useNavigate()
 
@@ -15,7 +18,10 @@ const Login = () => {
     e.preventDefault()
     setError('')
     
-    const result = await login(email, password)
+    // 2. Truyền thêm biến rememberMe vào hàm login (nếu AuthContext hỗ trợ)
+    // Thông thường biến này dùng để quyết định lưu token vào localStorage (lâu dài) hay sessionStorage (tạm thời)
+    const result = await login(email, password, rememberMe)
+    
     if (result.success) {
       navigate('/')
     } else {
@@ -57,6 +63,20 @@ const Login = () => {
               </button>
             </div>
           </div>
+
+          {/* 3. Thêm Checkbox Ghi nhớ đăng nhập */}
+          <div className="form-group remember-me-group">
+            <label className="checkbox-container">
+              <input
+                type="checkbox"
+                checked={rememberMe}
+                onChange={(e) => setRememberMe(e.target.checked)}
+              />
+              <span className="checkmark"></span>
+              Ghi nhớ đăng nhập
+            </label>
+          </div>
+
           <button type="submit" className="btn btn-primary">
             Đăng nhập
           </button>

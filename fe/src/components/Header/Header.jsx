@@ -26,7 +26,7 @@ const Header = () => {
     { name: "Realme", value: "realme" },
     { name: "OPPO", value: "oppo" },
     { name: "Nokia", value: "nokia" },
-    {name: "Phụ kiện", value: "accessories"}
+    { name: "Phụ kiện", value: "accessories" },
   ];
 
   useEffect(() => {
@@ -63,9 +63,10 @@ const Header = () => {
         <div className="container">
           <div className="header-marquee">
             <div className="header-marquee-track">
-              <span>Hot! Giao nhanh - Giảm ngay 300k cho đơn hàng đầu tiên của quý khách!</span>
-              <span>Hot! Giao nhanh - Giảm ngay 300k cho đơn hàng đầu tiên của quý khách!</span>
-              <span>Hot! Giao nhanh - Giảm ngay 300k cho đơn hàng đầu tiên của quý khách!</span>
+              <span>
+                Hot! Giao nhanh - Giảm ngay 300k cho đơn hàng đầu tiên của quý
+                khách!
+              </span>
             </div>
           </div>
         </div>
@@ -147,8 +148,7 @@ const Header = () => {
                   className="account-btn"
                   onClick={() => setShowAccountMenu(!showAccountMenu)}
                 >
-                  <span className="account-icon">👤</span>
-                  <span className="account-text">Đăng nhập</span>
+                  <span className="account-text">Đăng nhập/Đăng ký</span>
                 </button>
 
                 {showAccountMenu && (
