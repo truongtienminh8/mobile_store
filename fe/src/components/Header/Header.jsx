@@ -2,7 +2,6 @@ import { Link, useNavigate } from "react-router-dom";
 import { useState, useRef, useEffect } from "react";
 import { useAuth } from "../../contexts/AuthContext";
 import { useCart } from "../../contexts/CartContext";
-import chatIcon from "../../assets/images/chat.png";
 import "./Header.css";
 
 const Header = () => {
@@ -148,7 +147,7 @@ const Header = () => {
                   className="account-btn"
                   onClick={() => setShowAccountMenu(!showAccountMenu)}
                 >
-                  <span className="account-text">Đăng nhập/Đăng ký</span>
+                  <span className="account-text">Đăng nhập</span>
                 </button>
 
                 {showAccountMenu && (

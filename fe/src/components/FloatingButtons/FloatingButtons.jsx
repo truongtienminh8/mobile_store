@@ -15,8 +15,8 @@ const FloatingButtons = () => {
       <button
         className="floating-btn floating-btn-hotline"
         onClick={handleHotline}
-        aria-label="Gọi hotline"
-        title="Gọi hotline: 1800 2097"
+        aria-label="Hotline"
+        title="Hotline: 0355481078"
       >
         <svg
           className="floating-icon"
